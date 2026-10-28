@@ -2,11 +2,11 @@
 
 ### Live2D Cubism Components
 
-Cubism Web Framework is included in Live2D Cubism Components.
+Cubism Web Samples is included in Live2D Cubism Components.
 
-Cubism Web Framework は Live2D Cubism Components に含まれます。
+Cubism Web Samples は Live2D Cubism Components に含まれます。
 
-Cubism Web Framework 包括在 Live2D Cubism Components 中。
+Cubism Web Samples 包括在 Live2D Cubism Components 中。
 
 ## Cubism SDK Release License
 
@@ -38,6 +38,28 @@ Live2D Cubism Core is available under Live2D Proprietary Software License.
 * [Live2D Proprietary Software License Agreement](https://www.live2d.com/eula/live2d-proprietary-software-license-agreement_en.html)
 * [Live2D Proprietary Software 使用許諾契約書](https://www.live2d.com/eula/live2d-proprietary-software-license-agreement_jp.html)
 * [Live2D Proprietary Software 使用授权协议](https://www.live2d.com/eula/live2d-proprietary-software-license-agreement_cn.html)
+
+
+## Free Material License
+
+Live2D models listed below are available under Free Material License.
+
+* [Free Material License Agreement](https://www.live2d.com/eula/live2d-free-material-license-agreement_en.html)
+* [無償提供マテリアルの使用許諾契約書](https://www.live2d.com/eula/live2d-free-material-license-agreement_jp.html)
+* [无偿提供素材使用授权协议](https://www.live2d.com/eula/live2d-free-material-license-agreement_cn.html)
+
+```
+Samples/Resources/Haru
+Samples/Resources/Hiyori
+Samples/Resources/Mao
+Samples/Resources/Mark
+Samples/Resources/Natori
+Samples/Resources/Ren
+Samples/Resources/Rice
+Samples/Resources/Wanko
+```
+
+If you use these models, you must agree to the terms of a contract set [here](https://www.live2d.com/eula/live2d-sample-model-terms_en.html) for each model.
 
 
 ---
