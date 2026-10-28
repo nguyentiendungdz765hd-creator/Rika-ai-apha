@@ -2,29 +2,72 @@
 
 ---
 
-# Live2D Cubism Core
+# Cubism Web Samples for TypeScript
 
-このフォルダーには、JavaScriptまたはTypeScriptアプリケーションを開発するためのコアライブラリファイルが含まれています。
+TypeScript で実装したアプリケーションのサンプル実装です。
 
 
-## ファイルリスト
+## 開発環境
 
-### live2dcubismcore.d.ts
+| パッケージ | バージョン |
+| --- | --- |
+| TypeScript | 5.9.3 |
+| Vite | 8.0.2 |
 
-このファイルには、`live2dcubismcore.js`に関するTypeScriptの型情報が含まれています。
-TypeScriptで開発する場合は、このファイルを`live2dcubismcore.js`とともに使用してください。
+その他のパッケージに関しては、各プロジェクトの `package.json` を確認してください。
+また、その他の開発環境・動作確認環境はトップディレクトリにある [README.md](/README.ja.md) を参照してください。
 
-### live2dcubismcore.js
 
-このファイルには、CubismCoreの機能といくつかのラッパーが含まれています。
-JavaScriptで開発する場合は、このファイルを使用してください。
+## タスク一覧
 
-### live2dcubismcore.js.map
+### `npm: start`
 
-このファイルは、`live2dcubismcore.d.ts`と`live2dcubismcore.js`の間のソースマップです。
-デバッグ時にこのファイルを使用します。
+開発用のローカルサーバが起動され、プロジェクトの監視ビルドが行われます。
+プロジェクトの変更を行うと自動的に再ビルドが行われ、ブラウザのリロードが発生します。
+[プロジェクトのデバッグ]から Visual Studio Code 上でデバッグを行うことができます。
 
-### live2dcubismcore.min.js
+Visual Studio Code 上で終了する場合は、
+コマンドパレットから `>Tasks: Terminate Task` を入力してタスクを選択します。
 
-このファイルは、`live2dcubismcore.js`のminify版です。
-このファイルを本番環境で使用します。
+### `npm: build`
+
+`dist` ディレクトリに、TypeScript のビルド成果物を出力します。
+Vite を用いて1つにまとめられた JavaScript ファイルが出力されます。
+動作に必要なファイルもコピーされます。
+
+`tsconfig.json` 及び `vite.config.mts` を編集することで設定内容を変更できます。
+
+### `npm: build:prod`
+
+上記のビルドを最適化した上で行います。
+ビルドサイズが削減されるため、本番環境用の成果物の出力に使用します。
+
+### `npm: test`
+
+TypeScript の型チェックテストを行います。
+
+`tsconfig.json` を編集することで設定内容を変更できます。
+
+### `npm: lint`
+
+`src` ディレクトリ内の TypeScript ファイルの静的解析を行います。
+
+`eslint.config.mjs` を編集することで設定内容を変更できます。
+
+### `npm: lint:fix`
+
+`src` ディレクトリ内の TypeScript ファイルの静的解析及び自動修正を行います。
+
+`eslint.config.mjs` を編集することで設定内容を変更できます。
+
+### `npm: serve`
+
+簡易ローカルサーバを起動します。
+ブラウザからサーバ内の `/Samples/TypeScript/Demo` にアクセスすることで index.html の確認ができます。
+事前にプロジェクトのビルドを行なっている必要があります。
+
+本番環境に近い環境で成果物の検証を行うことができます。
+
+### `npm: clean`
+
+ビルド成果物ディレクトリ（`dist`）を削除します。
