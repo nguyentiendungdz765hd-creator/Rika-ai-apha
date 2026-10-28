@@ -5,422 +5,459 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 
-## 2026-04-02
-
-### Removed
-
-* [Unity] Remove Android x86 library.
-
-
-## 2026-01-29
+## [5-r.5] - 2026-04-02
 
 ### Added
 
-* Add Arm64 static library for iphonesimulator.
-
-
-## 2026-01-08
+* Add functionality to change motion calculation order.
+* Add `cubismlook` class that implements the target tracking feature.
+  * The target tracking feature can now specify parameter IDs through the `Framework`.
 
 ### Changed
 
-* Upgrade Core version to 06.00.0001.
+* Change multiply and screen color functions to separate class with renamed methods.
 
 ### Fixed
 
-* Fix offscreen opacity calculation.
-
-
-## 2025-10-30
+* Fix unnecessary multiply color and screen color settings in mask drawing.
 
 ### Removed
 
-* [Native] Remove Visual Studio 2015 (MSVC 140) static library.
+* Remove deprecated functions from CubismMotion:
+  * `setIsLoop()` (use `setLoop()` instead)
+  * `isLoop()` (use `getLoop()` instead)
+  * `setIsLoopFadeIn()` (use `setLoopFadeIn()` instead)
+  * `isLoopFadeIn()` (use `getLoopFadeIn()` instead)
+* Remove deprecated functions from CubismExpressionMotionManager:
+  * `getCurrentPriority()` (priority is not used in expression motion playback)
+  * `getReservePriority()` (priority is not used in expression motion playback)
+  * `setReservePriority()` (priority is not used in expression motion playback)
+  * `startMotionPriority()` (use `startMotion()` instead)
+* Remove deprecated fields from CubismExpressionMotionManager:
+  * `_currentPriority` (priority is not used in expression motion playback)
+  * `_reservePriority` (priority is not used in expression motion playback)
+* Remove deprecated function from CubismExpressionMotion:
+  * `getFadeWeight()` (use `CubismExpressionMotionManager.getFadeWeight()` instead)
+* Remove deprecated field from CubismExpressionMotion:
+  * `_fadeWeight` (can cause bugs)
+* Remove deprecated functions from CubismModel:
+  * `getOverwriteFlagForModelCullings()` (renamed to `getOverrideFlagForModelCullings()`)
+  * `setOverwriteFlagForModelCullings()` (renamed to `setOverrideFlagForModelCullings()`)
+  * `getOverwriteFlagForDrawableCullings()` (renamed to `getOverrideFlagForDrawableCullings()`)
+  * `setOverwriteFlagForDrawableCullings()` (renamed to `setOverrideFlagForDrawableCullings()`)
 
 
-## 2025-10-14
-
-### Added
-
-* Add `csmGetMocVersion(mocBytes: ArrayBuffer)` with simplified arguments from `csmGetMocVersion(moc: Moc, mocBytes: ArrayBuffer)`. 
-  * The previous version `csmGetMocVersion(moc: Moc, mocBytes: ArrayBuffer)` is now deprecated and is planned to be removed in the future.
-
-
-## 2025-08-26
-
-### Added
-
-* Enhanced model rendering features have been added.
-
-### Changed
-
-* Upgrade Core version to 06.00.0000.
-
-
-## 2025-07-17
-
-### Changed
-
-* [Unity,Native,Java] Implement support for Android 16KB page size.
-
-
-## 2025-04-24
-
-### Added
-
-* Add the function `csmGetParameterRepeats`.
-  * This function retrieves whether the parameters are set to repeat.
-
-### Changed
-
-* Upgrade Core version to 05.01.0000.
+## [5-r.5-beta.3.1] - 2026-02-19
 
 ### Fixed
 
-* Fix `csmGetParameterKeyCounts()` and `csmGetParameterKeyValues()` symbols in the DLL.
+* Fix a bug where rendering results were not as expected when using Blend mode on semi-transparent objects.
+* Fix a bug where the `stopAllMotions()` function in the `CubismMotionQueueManager` class did not work correctly.
+
+
+## [5-r.5-beta.3] - 2026-01-29
 
 ### Changed
 
-* Upgrade Core version to 05.01.0000.
+* Replace standard `Array`, `Map`, and `String` with `csmVector`, `csmMap`, and `csmString`.
+* Change to allow shader files to be specified outside the `CubismFramework`.
+* Change the shader strings written in the `CubismShader_WebGL` class to use external files.
+
+### Fixed
+
+* Fix the operation of `CubismOffscreenRenderTargetManager` to be more efficient.
+* Fix the timing of beforeDrawModelRenderTarget call.
 
 
-## 2024-12-19
+## [5-r.5-beta.2] - 2025-10-14
+
+### Added
+
+* Add classes `CubismOffscreenRenderTarget_WebGL` and `CubismOffscreenManager` that reuse `WebGLFramebuffer` for Offscreen drawing.
+* Add `getMocVersionFromBuffer()`function.
+  * Support for retrieving MOC version from unsupported new MOC3 files.
 
 ### Removed
 
-* [Native] Remove Visual Studio 2013 (MSVC 120) static library.
+* Remove unnecessary classes and variables.
 
 
-## 2024-11-07
+## [5-r.5-beta.1] - 2025-08-26
 
 ### Added
 
-* [Native] Add experimental support `arm64` library for linux.
+* Add `cubismrendertarget_webgl.ts`.
+  * Define a class `CubismRenderTarget_WebGL` that manages the frame buffer and color buffer.
+* Add support for Blend mode and Offscreen drawing.
+
+### Changed
+
+* Change the rendering context requirement in WebGL environments to `WebGL2RenderingContext`.
+  * In particular, when using the blend modes added in Cubism 5.3 and later, `WebGL2RenderingContext.blitFramebuffer()` is used.
+* Change the clipping mask processing uses class `CubismRenderTarget_WebGL`.
+* Change the API called to retrieve the drawable render order from `getDrawableRenderOrders()` to `getRenderOrders()` in CubismCore.
+  * See `CHANGELOG.md` in Core.
+
+
+## [5-r.4] - 2025-05-15
+
+### Added
+
+* Add parameter repeat processing that connects the right and left ends of the parameter to create a loop, allowing the motion to repeat.
+  * Add the variable `_isOverriddenParameterRepeat` to the `CubismModel` class for managing parameter repeat flags at the model level.
+  * Add the variable `_userParameterRepeatDataList` to the `CubismModel` class for managing parameter repeat flags for each parameter.
+* Add a `getPartParentPartIndices()` function.
+* Add a flag to the arguments of the following methods to enable the function that verifies the consistency of `motion3.json`:
+  * `CubismUserModel.loadMotion()`
+  * `CubismMotion.create()`
+  * `CubismMotion.parse()`
+
+### Fixed
+
+* Fix an issue with detecting the end of playback when looping motion.
+
+
+## [5-r.3] - 2025-02-18
+
+### Added
+
+* Add new motion loop processing that seamlessly connects the start and end points of the loop.
+  * The `_isLoop` variable was moved from class `CubismMotion` to class `ACubismMotion`.
+  * Add the setter for `_isLoop`, `setLoop()`, to class `ACubismMotion`.
+  * Add the getter for `_isLoop`, `getLoop()`, to class `ACubismMotion`.
+  * The `_isLoopFadeIn` variable was moved from class `CubismMotion` to class `ACubismMotion`.
+  * Add the setter for `_isLoopFadeIn`, `setLoopFadeIn()`, to class `ACubismMotion`.
+  * Add the getter for `_isLoopFadeIn`, `getLoopFadeIn()`, to class `ACubismMotion`.
+  * Add a variable `_motionBehavior` for version control to the `CubismMotion` class.
+
+### Changed
+
+* Change ESLint version to `9.17.0`.
+  * With this update, we have added the eslint.confing.mjs required for FlatConfig.
+
+### Deprecated
+* Deprecate the following elements due to the change in the variable declaration location.
+  * `CubismMotion.setIsLoop()`
+  * `CubismMotion.isLoop()`
+  * `CubismMotion.setIsLoopFadeIn()`
+  * `CubismMotion.isLoopFadeIn()`
+
+## [5-r.2] - 2024-12-19
+
+### Added
+
+* Add the functionality to call a function when motion playback starts.
+* Add an API to `CubismMotionJson` for verifying the consistency of `motion3.json`. by [@pillowtrucker](https://github.com/Live2D/CubismNativeFramework/pull/57)
+  * This API is ported from `Cubism Native Framework`.
+
+### Changed
+
+* Change to create and manage a `CubismShader` for each `GLRenderingContext`.
+* Change the access level of the private members in `CubismModelSettingJson` class to protected.
+* Move JSON key strings set to the member variables of `CubismModelSettingJson` class.
+* Change `FrequestNode` to be exported as part of the module.
+* Change to permit to overwrite motion fade by the value specified in .model3.json on `CubismUserModel.loadMotion()`.
+* Change the value of pi used in the calculation of `CubismBreath.updateParameters()` to `Math.PI`.
+
+### Deprecated
+
+* Deprecate the following elements because a priority value is not actually used during expression motion playback:
+  * `CubismExpressionMotionManager._currentPriority`
+  * `CubismExpressionMotionManager._reservePriority`
+  * `CubismExpressionMotionManager.startMotionPriority()`
+  * `CubismExpressionMotionManager.getCurrentPriority()`
+  * `CubismExpressionMotionManager.getReservePriority()`
+  * `CubismExpressionMotionManager.setReservePriority()`
+
+  Please use the `CubismMotionQueueManager.startMotion()` instead of `CubismExpressionMotionManager.startMotionPriority()`.
+
+
+### Fixed
+
+* Fix an issue where already registered keys could be added on `csmMap.appendKey()`.
+* Fix a bug that caused an error when playing `CubismExpresionMotion` with `CubismMotionQueueManager.startMotion()`.
+* Fix an issue where `CubismMath.cardanoAlgorithmForBezier()` was using a different function than Cubism SDK for Native.
+* Fix a potential problem with division by 0 when a pose fade time is set to 0 seconds.
+* Fix an issue where `CubismPose._fadeTimeSeconds` does not become 0.
+
+
+## [5-r.1] - 2024-03-26
+
+### Added
+
+* Add function `mod()` to compute floating-point remainder in `CubismMath` class.
+
+### Changed
+
+* Change an expression "overwrite" to "override" for multiply color, screen color, and culling to adapt the actual behavior.
+* Change the weight value in `Expression` from `CubismExpressionMotion` to have it in the `CubismExpressionMotionManager`.
+* Reorganize the names of some functions and variables.
+  * This is a change that depends on fixing `eslintrc.yml`.
+* Change to output log if the argument `motionQueueEntry` is `null` in the `updateFadeWeight()` function of the `ACubismMotion` class.
+
+### Fixed
+
+* Fix `eslintrc.yml` to conform to the exact wording.
+
+### Deprecated
+
+* Deprecate the `_fadeWeight` variable and the `getFadeWeight()` function of the `CubismExpressionMotion` class.
+  * The `_fadeWeight` variable of the `CubismExpressionMotion` class can cause problems.
+  * Please use the `getFadeWeight()` function of the `CubismExpressionMotionManager` class with one argument from now on.
+* The `startMotion()` function of the `CubismMotionQueueManager` class with the unnecessary third argument `userTimeSeconds` is deprecated.
+  * Please use the `startMotion()` function with one arguments from now on.
+
+
+## [5-r.1-beta.4] - 2024-01-18
+
+### Changed
+
+* Change target to `es6`.
+
+### Fixed
+
+* Fix an issue where models with a specific number of masks could not be drawn correctly.
+* Fix to check for error when reading json.
+
+
+## [5-r.1-beta.3] - 2023-11-30
+
+
+## [5-r.1-beta.2] - 2023-09-28
+
+### Added
+
+* Add a comment for clarity for the function whose usage is not intuitive.
+
+
+## [5-r.1-beta.1] - 2023-08-17
+
+### Added
+
+* Add the function to get the ID of a given parameter.(`CubismModel.getParameterId`)
+* Add the `CubismExpressionMotionManager` class.
+
+### Changed
+
+* Change the visibility of the `CubismId` constructor to private.
+  * Please use `CubismFramework.getIdManager().getId()` to get `CubismId`.
+* Change the word `DrawMesh` to `DrawMeshWebGL`.
+
+### Fixed
+
+* Fix a bug that the value applied by multiply was not appropriate during expression transitions.
+* Fix the structure of the class in renderer.
+* Fix a issue where `ARRAY_BUFFER` was used on multiple targets.
+* Separate shader class from `cubismrenderer` class.
+* Separate the high precision mask process from the clipping mask setup process.
 
 ### Removed
 
-* [Unity,Native,Java] Remove Android ARM v7 library.
+* Remove several arguments of `DrawMesh` function.
 
 
-## 2024-04-04
-
-### Added
-
-* [Unity] Add library(.so) for HarmonyOS build.
-
-
-## 2024-03-26
-
-### Remove
-
-* [Unity] Remove built with Emscripten 1.38.48.
- * Unity 2021.2 or later uses only Core under `Assets/Live2D/Cubism/Plugins/Experimental/Emscripten/latest`.
-
-
-## 2023-09-28
-
-### Remove
-
-* Remove bitcode from IOS build.
-
-
-## 2023-08-17
+## [4-r.7] - 2023-05-25
 
 ### Added
 
-* Enhance Blend Shape features.
-  * Please see [here](https://docs.live2d.com/en/cubism-editor-manual/blend-shape/).
+* Add compiler options `noImplicitAny` and `useUnknownInCatchVariables` to `tsconfig.json`.
+* Add some function for checking consistency of MOC3.
+  * Add the function of checking consistency on reviving a MOC3. (`CubismMoc::Create`)
+* Add a function to parse the opacity from `.motion3.json`.
+* Add some functions to change Multiply and Screen colors on a per part basis.
 
 ### Changed
 
-* Upgrade Core version to 05.00.0000.
-
-
-## 2023-05-09
-
-### Changed
-
-* Change the GCC version of the library for Linux from 6.5.0 to 8.3.0.
-
-
-## 2023-03-16
+* Change access specifier for `CubismExpressionMotion`.
 
 ### Fixed
 
-* Fix a case in which the index of the mask's drawable object was negative value for `csmGetDrawableMasks()`.
-* Fix a problem in which `csmHasMocConsistency()` was returned as 0 even though the MOC3 file was in the correct format.
-  * This problem was occurring in some models using the blendshape weight limit settings.
-* Fix a problem that could cause a crash if a MOC3 file that is not in the correct format is loaded with `csmHasMocConsistency()`.
-
-### Changed
-
-* Upgrade Core version to 04.02.0004.
+* Fix to support added compiler options `noImplicitAny` and `useUnknownInCatchVariables`.
 
 
-## 2023-03-10
-
-### Added
-
-* Add the function `csmHasMocConsistency`.
-  * This function verifies that the `MOC3` file is valid.
-
-### Changed
-
-* Upgrade Core version to 04.02.0003.
-
-
-## 2023-02-21
-
-### Added
-
-* [Web] Added classes related to `Memory`.
-  * Add the funciton `initializeAmountOfMemory()` to adjust the amount of memory at initialization.
-
-
-## 2022-10-28
+## [4-r.6.2] - 2023-03-16
 
 ### Fixed
 
-* [Java] Remove unnecessary methods.
+* Fix some problems related to Cubism Core.
+  * See `CHANGELOG.md` in Core.
 
 
-## 2022-10-06
+## [4-r.6.1] - 2023-03-10
 
 ### Added
 
-* [Java] Add AAR file for Android.
+* Add function to validate MOC3 files.
 
 
-## 2022-09-08
+## [4-r.6] - 2023-02-21
+
+### Added
+
+* Add support for high-precision masks.
+* The number of render textures used can now be increased arbitrarily.
+  * The maximum number of masks when using multiple render textures has been increased to "number of render textures * 32".
+* Add API to allow users to configure culling.
+
+### Changed
+
+* Change to not reference `CubismClippingManager_WebGL` on models that do not use clipping masks.
+
+### Fixed
+
+* Fix a crash when a `WebGLRenderingContext` is not registered with `Cubism Renderer_WebGL`.
+  * It now displays a warning and does not draw models.
+* Fix a bug when displaying a model with culling set, some of the other drawn images are missing.
+* Fix a bug that caused update information for some models not to be updated when multiple models are displayed.
+  * Call the function to extend the initial memory with CubismFramework.initialize(). See `CHANGELOG.md` in Core.
+
+
+## [4-r.5] - 2022-09-08
 
 ### Added
 
 * Add the multilingual supported documents.
-* Support Visual Studio 2022.
+* Add immediate stabilization of physics.
+* Implemented a process to switch between `CubismJson` parsing and `JSON.parse()`.
 
 
-## 2022-08-04
+## [4-r.5-beta.5] - 2022-08-04
 
 ### Fixed
 
-* [Web] Fix `csmGetMocVersion` function argument.
+* Fix `csmGetMocVersion` function argument.
+* Fix a bug in which processing was interrupted when an invalid vertex was specified in the middle of a physics operation.
+* Fix crash with exception when reading .moc3 files of unsupported versions.
+* Fix physics system input to be split by the physics setting time.
 
 
-## 2022-07-07
+## [4-r.5-beta.4] - 2022-07-07
 
 ### Added
 
-* Add functions
-  * `csmGetParameterTypes`
-  * `csmGetDrawableParentPartIndices`
-
-* Add type `csmMocVersion` and enum. This type is the return value of `csmGetMocVersion`, `csmGetLatestMocVersion`.
-
-### Changed
-
-* Upgrade Core version to 04.02.0002.
+* Add a function to get the latest .moc3 Version and the .moc3 Version of the loaded model.
+* Add a function to get the type of parameters of the model.
+* Add a function to get the parent part of the model's Drawable.
 
 
-## 2022-06-02
+## [4-r.5-beta.3] - 2022-06-16
 
-### Changed
+### Fixed
 
-* Upgrade Core version to 04.02.0001.
+* `getDrawableTextureIndices` function in `CubismModel` has been renamed to `getDrawableTextureIndex` because the name was not correct.
+  * `getDrawableTextureIndices` function is marked as deprecated.
+* Fix physics system behaviour when exists Physics Fps Setting in .physics3.json.
+
+
+## [4-r.5-beta.2] - 2022-06-02
 
 ### Fixed
 
 * Fixed a bug that caused Multiply Color / Screen Color of different objects to be applied.
+  * See `CHANGELOG.md` in Core.
+  * No modifications to Samples and Framework.
 
 
-## 2022-05-19
-
-### Added
-
-* Support new Multiply Color / Screen Color features.
-* Support new Blend Shape features.
-
-### Changed
-
-* Upgrade Core version to 04.02.0000. This upgrade is following Cubism Editor 4.2 features.
-
-
-## 2022-02-10
+## [4-r.5-beta.1] - 2022-05-19
 
 ### Added
 
-* [Unity] Add bitcode library(.bc) for Emscripten latest version build.
-
-### Changed
-
-* [Unity] Change the bitcode file directory location.
-  * emsdk latest version build bitcode file in `latest` directory.
-  * emsdk 1.38.48 build bitcode file in `1_38_48` directory.
-
-
-## 2021-12-09
-
-### Added
-
-* Add static library(.a) for Mac Catalyst.
-
-
-## 2021-10-07
-
-### Added
-
-* Add `x86_64` library for Android.
-* Add `arm64` library for macOS.
-
-
-## 2021-03-09
-
-### Added
-
-* Add funtcions for Viewer.
-  * `csmGetParameterKeyCounts`
-  * `csmGetParameterKeyValues`
-
-
-### Changed
-
-* Update Core version to `04.01.0000`.
-
-
-## 2020-01-30
-
-### Added
-
-* Add static library(.lib) for statically linking DLL.
-* Add symbol file for Windows dynamic library (dll).
-
-
-## 2019-11-19
+* Add processing related to Multiply Color / Screen Color added in Cubism 4.2.
 
 ### Fixed
 
-* Fix linking static libraries for Windows (.lib).
+* Fix usage of Anisotropy filtering.
+* Fix model was not displayed when the number of masks exceeded the limit.
+* Fix getTextureDirectory() to return the directory name of the 0th texture path.
 
 
-## 2019-11-14
+## [4-r.4] - 2021-12-09
+
+### Fixed
+
+* Fix useless void 0.
+* Fix a warning when `SegmentType` could not be obtained when loading motion.
+* Fix return correct error values for out-of-index arguments in cubismjson by [@cocor-au-lait](https://github.com/cocor-au-lait).
+* Fix a bug that motions currently played do not fade out when play a motion.
+
+
+## [4-r.3] - 2021-06-10
+
+### Fixed
+
+* Fix motion event time value from Int to Float.
+
+
+## [4-r.3-beta.1] - 2021-05-13
 
 ### Added
 
-* Support Visual Studio 2019.
-* Support macOS dynamic library (dylib).
+* Implement a function to get the correct value when the time axis of the Bezier handle cannot be linear.
+
+
+## [4-r.2] - 2021-03-09
+
+### Fixed
+
+* Fix implementation of `iterator#increment` in `csmmap` and `csmvector`.
+* Fix delay in starting fade-out for expressions.
+* Fix Physics input reflect flag on evaluate.
+* Fix reference size of model matrix.
+* Fix `Int` to `Float` when getting `PhysicsSettings.Vertices.Radius` in `physics3.json` parsing.
+   * **[INFO]** This fix may change the behavior of the physics operations.
+     The behavior changes if the value of `PhysicsSettings.Vertices.Radius` in `physics3.json` is less than `1.0`.
+     If you want to return to the behavior before Cubism SDK for Web R1,
+     change the value of the corresponding `PhysicsSettings.Vertices.Radius` to `0`.
+   * This fix is related to fix applied to `Cubism Editor 4.0.05 beta1` and later.
+     Please see [Cubism Editor Changelog](https://docs.live2d.com/cubism-editor-manual/updates4/).
+      * **Fix physics and scene blending settings where the length of the pendulum would be converted to an integer when displayed.**
 
 ### Changed
 
-* Update Windows dynamic library:  Use Visual Studio 2019 for building.
-
-### Security
-
-* Bundle certificate and notary ticket to macOS shared library.
+* Rename the function name that handles seconds from `Time` to `Seconds`.
+* Avoiding needless namespace syntax to simplify imports by [@cocor-au-lait](https://github.com/cocor-au-lait)
 
 
-## 2019-09-04
+## [4-r.1] - 2020-01-30
 
 ### Added
 
-* Support new Inverted Masking features.
-* Support ARM64 architecture for Universal Windows Platform.
+* Add `.editorconfig`, `.gitattributes` and `.gitignore`.
+* Add document `README.md` and `CHANGELOG.md`.
+* Add `package.json` for development and build.
+* Add Prettier and ESLint for format and check code quolity.
 
 ### Changed
 
-* Upgrade Core version to 04.00.0000 (67108864). This upgrade is following Cubism Editor 4.0 features.
-* Add calling convention for *Windows/x86 DLL* only.
-
-### Removed
-
-* Remove bitcode binary due to suspension of *Cubism Bindings.*
+* Move source files to `/src` directory.
+* Reformat code using Prettier and ESLint.
 
 
-## 2019-04-09
-
-### Added
-
-* Support Universal Windows Platform for Windows Store Application.
-
-
-## 2019-01-31
-
-### Added
-
-* Add API to get the parent part of the specified part.
-* Add API to get moc3 version.
-
-
-## 2018-12-20
-
-### Added
-
-* [Native] Add new function: `csmGetPartParentPartIndices`.
-* [Native, 3.3 Support] Support new Warp Deformer features.
-
-### Changed
-
-* Upgrade Core version to 03.03.0000 (50528256). This upgrade is following Cubism Editor 3.3 features.
-
-
-## 2018-08-22
-
-### Added
-
-* [Native] Add support for Neon.
-
-
-## 2018-05-14
-
-### Added
-
-* [Native] Add Windows **Visual C++ 2013** library.
-* [Windows] Add runtime library choice `MT`, `MD`, `MTd`, `MDd`.
-* [iOS] Add support for iPhone Simulator SDK.
-
-### Fixed
-
-* Fix an error occurred when linking libraries for Android `arm64-v8a`.
-
-
-## 2017-11-17
-
-### Fixed
-
-* Fix processing of vertex index.
-
-
-## 2017-10-05
-
-### Added
-
-* Provide bitcode for iOS.
-
-
-## 2017-08-09
-
-### Added
-
-* [Native] Add Android *arm64-v8a* ABI library.
-
-### Fixed
-
-* Fix drawing order in certain scenarios.
-
-
-## 2017-07-12
-
-### Added
-
-* Add experimental support for Emscripten.
-* Add `CHANGELOG.md`.
-
-### Fixed
-
-* Fix access violation in certain scenarios.
-* Fix update result in certain scenarios.
-
-
-## 2017-05-02
-
-### Added
-
-* [Native] Add experimental support for Raspberry PI.
-* Add `README.md`.
+[5-r.5]: https://github.com/Live2D/CubismWebFramework/compare/5-r.5-beta.3.1...5-r.5
+[5-r.5-beta.3.1]: https://github.com/Live2D/CubismWebFramework/compare/5-r.5-beta.3...5-r.5-beta.3.1
+[5-r.5-beta.3]: https://github.com/Live2D/CubismWebFramework/compare/5-r.5-beta.2...5-r.5-beta.3
+[5-r.5-beta.2]: https://github.com/Live2D/CubismWebFramework/compare/5-r.5-beta.1...5-r.5-beta.2
+[5-r.5-beta.1]: https://github.com/Live2D/CubismWebFramework/compare/5-r.4...5-r.5-beta.1
+[5-r.4]: https://github.com/Live2D/CubismWebFramework/compare/5-r.3...5-r.4
+[5-r.3]: https://github.com/Live2D/CubismWebFramework/compare/5-r.2...5-r.3
+[5-r.2]: https://github.com/Live2D/CubismWebFramework/compare/5-r.1...5-r.2
+[5-r.1]: https://github.com/Live2D/CubismWebFramework/compare/5-r.1-beta.4...5-r.1
+[5-r.1-beta.4]: https://github.com/Live2D/CubismWebFramework/compare/5-r.1-beta.3...5-r.1-beta.4
+[5-r.1-beta.3]: https://github.com/Live2D/CubismWebFramework/compare/5-r.1-beta.2...5-r.1-beta.3
+[5-r.1-beta.2]: https://github.com/Live2D/CubismWebFramework/compare/5-r.1-beta.1...5-r.1-beta.2
+[5-r.1-beta.1]: https://github.com/Live2D/CubismWebFramework/compare/4-r.7...5-r.1-beta.1
+[4-r.7]: https://github.com/Live2D/CubismWebFramework/compare/4-r.6.2...4-r.7
+[4-r.6.2]: https://github.com/Live2D/CubismWebFramework/compare/4-r.6.1...4-r.6.2
+[4-r.6.1]: https://github.com/Live2D/CubismWebFramework/compare/4-r.6...4-r.6.1
+[4-r.6]: https://github.com/Live2D/CubismWebFramework/compare/4-r.5...4-r.6
+[4-r.5]: https://github.com/Live2D/CubismWebFramework/compare/4-r.5-beta.5...4-r.5
+[4-r.5-beta.5]: https://github.com/Live2D/CubismWebFramework/compare/4-r.5-beta.4...4-r.5-beta.5
+[4-r.5-beta.4]: https://github.com/Live2D/CubismWebFramework/compare/4-r.5-beta.3...4-r.5-beta.4
+[4-r.5-beta.3]: https://github.com/Live2D/CubismWebFramework/compare/4-r.5-beta.2...4-r.5-beta.3
+[4-r.5-beta.2]: https://github.com/Live2D/CubismWebFramework/compare/4-r.5-beta.1...4-r.5-beta.2
+[4-r.5-beta.1]: https://github.com/Live2D/CubismWebFramework/compare/4-r.4...4-r.5-beta.1
+[4-r.4]: https://github.com/Live2D/CubismWebFramework/compare/4-r.3...4-r.4
+[4-r.3]: https://github.com/Live2D/CubismWebFramework/compare/4-r.3-beta.1...4-r.3
+[4-r.3-beta.1]: https://github.com/Live2D/CubismWebFramework/compare/4-r.2...4-r.3-beta.1
+[4-r.2]: https://github.com/Live2D/CubismWebFramework/compare/4-r.1...4-r.2
+[4-r.1]: https://github.com/Live2D/CubismWebFramework/compare/ce2585a919ac6e99f64dd468933772c6f1abbcc7...4-r.1
