@@ -1,0 +1,20 @@
+{
+  "format": "airi-character-card",
+  "version": 1,
+  "createdAt": "2026-11-24T07:32:44.925Z",
+  "card": {
+    "path": "card.json",
+    "spec": "chara_card_v3"
+  },
+  "resources": {
+    "displayModel": {
+      "format": "live2d-zip",
+      "name": "Hiyori (Pro).zip",
+      "path": "models/body-model.zip",
+      "controls": {
+        "disabledExpressions": [],
+        "disabledMotions": []
+      }
+    }
+  }
+}
