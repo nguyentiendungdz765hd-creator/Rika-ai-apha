@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <title>Rika AI</title>
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+  <script src="https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pixi.js@6.5.10/dist/browser/pixi.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pixi-live2d-display@0.4.0/dist/cubism4.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+
+  <section id="rikaIntro" class="intro-screen">
+    <canvas id="earthCanvas"></canvas>
+    <div class="intro-content">
+      <h1>Rika AI</h1>
+      <p>Trợ lý AI thử nghiệm của bạn</p>
+      <button id="enterAppBtn" class="primary-btn" type="button">Bắt đầu trò chuyện <span>→</span></button>
+    </div>
+  </section>
+
+  <div id="app" class="app hidden">
+    <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar-top">
+        <button id="closeSidebarBtn" class="icon-btn mobile-only" type="button" aria-label="Đóng">×</button>
+        <button id="newChatBtn" class="new-chat-btn" type="button">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+          Cuộc trò chuyện mới
+        </button>
+      </div>
+
+      <div class="sidebar-lucian">
+        <div class="ux u413">
+          <button class="u413-tr" type="button" aria-expanded="false">
+            hello work
+            <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.8 6 7.8l3-3"/></svg>
+          </button>
+          <div class="u413-pn" role="region" aria-label="Sản phẩm">
+            <span class="u413-hl" aria-hidden="true"></span>
+            <ul class="u413-ls">
+              <li><a class="u413-it" href="#" style="--i:0" data-action="settings">
+                <span class="u413-ic u413-c1" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09A1.65 1.65 0 008 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 110-4h.09A1.65 1.65 0 004.6 8a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 114 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 110 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+                </span>
+                <span><b>Cài đặt</b><small>Tùy chỉnh Rika</small></span>
+              </a></li>
+              
+              <li><a class="u413-it" href="#" style="--i:1" data-action="globe">
+                <span class="u413-ic u413-c2" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/></svg>
+                </span>
+                <span><b>Quả địa cầu</b><small>Góc nhìn Trái Đất</small></span>
+              </a></li>
+              
+              <li><a class="u413-it" href="#" style="--i:2" data-action="explore">
+                <span class="u413-ic u413-c3" aria-hidden="true">
+                  <svg viewBox="0 0 18 18"><path d="M10 2.2 4.6 10h4.1l-.8 5.8L13.4 8H9.3z"/></svg>
+                </span>
+                <span><b>Khám phá</b><small>Chủ đề thú vị</small></span>
+              </a></li>
+              
+              <li><a class="u413-it" href="#" style="--i:3" data-action="live2d">
+                <span class="u413-ic u413-c4" aria-hidden="true">
+                  <svg viewBox="0 0 18 18"><path d="M3 15h12M5.5 12.5V9M9 12.5V5M12.5 12.5V7.5"/></svg>
+                </span>
+                <span><b>Live2D</b><small>Gặp Rika 3D</small></span>
+              </a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="history-heading">
+        <span>Gần đây</span>
+        <button id="clearHistoryBtn" type="button" title="Xóa lịch sử" aria-label="Xóa lịch sử">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m3 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6"/></svg>
+        </button>
+      </div>
+      <div id="historyList" class="history-list"></div>
+
+      <div class="sidebar-bottom">
+        <div class="sidebar-user">
+          <div class="avatar">R</div>
+          <div>
+            <strong>Rika AI</strong>
+            <small>Trực tuyến</small>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-panel">
+      <header class="topbar">
+        <button id="menuBtn" class="icon-btn" type="button" aria-label="Menu">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+        </button>
+        <div class="title-wrap">
+          <strong id="chatTitle">Rika AI</strong>
+        </div>
+        <div class="subject-select" id="subjectDropdown">
+          <button id="subjectSelected" class="subject-trigger" type="button">
+            <span id="subjectText">Môn học</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div id="subjectOptions" class="subject-options hidden">
+            <div class="subject-option" data-value="">— Không chọn —</div>
+            <div class="subject-option" data-value="toan"> Toán</div>
+            <div class="subject-option" data-value="ly">Vật Lý</div>
+            <div class="subject-option" data-value="hoa"> Hóa Học</div>
+            <div class="subject-option" data-value="van"> Ngữ Văn</div>
+            <div class="subject-option" data-value="anh"> Tiếng Anh</div>
+            <div class="subject-option" data-value="sinh"> Sinh Học</div>
+            <div class="subject-option" data-value="su">️ Lịch Sử</div>
+            <div class="subject-option" data-value="dia">️ Địa Lý</div>
+            <div class="subject-option" data-value="tin"> Tin Học</div>
+          </div>
+        </div>
+        <button id="topNewChatBtn" class="icon-btn" type="button" aria-label="Chat mới">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+      </header>
+
+      <section id="chatBox" class="chat-box">
+        <div id="welcomeBox" class="welcome-box">
+          <div class="welcome-logo">R</div>
+          <h1>Chào bạn, mình là Rika</h1>
+          <p>Hôm nay mình có thể giúp gì cho bạn?</p>
+          <div class="suggestion-grid">
+            <button class="suggestion-card" type="button" data-prompt="Kể cho mình nghe về quá khứ của bạn đi.">
+              <strong>Hỏi về quá khứ</strong><small>Cuộc đời của Rika</small>
+            </button>
+            <button class="suggestion-card" type="button" data-prompt="Bạn đang cảm thấy thế nào hôm nay?">
+              <strong>Hỏi thăm cảm xúc</strong><small>Trò chuyện vui vẻ</small>
+            </button>
+            <button class="suggestion-card" type="button" data-prompt="Giúp mình giải bài tập này với.">
+              <strong>Học tập</strong><small>Giải thích kiến thức</small>
+            </button>
+            <button class="suggestion-card" type="button" data-prompt="Bạn có thể làm gì trong thế giới này?">
+              <strong>Khám phá</strong><small>Tìm hiểu về Rika</small>
+            </button>
+          </div>
+        </div>
+        <div id="messages" class="messages"></div>
+      </section>
+
+      <div class="composer-area">
+        <div id="attachmentBar" class="attachment-bar hidden" aria-live="polite"></div>
+
+        <form id="chatForm" class="ux u452" autocomplete="off">
+          <div class="u452-box">
+            <i class="u452-glow" aria-hidden="true"></i>
+            <textarea id="userInput" class="u452-ta" rows="1"
+              aria-label="Câu hỏi"
+              placeholder="Hỏi Rika bất cứ điều gì..."
+              spellcheck="false"></textarea>
+            <div class="u452-bar">
+              <button id="attachBtn" type="button" class="u452-add" aria-label="Đính kèm tệp">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+              </button>
+              <button id="modelBtn" type="button" class="u452-md" aria-label="Mô hình: Rika 0.1">
+                <span class="u452-mv"><b>Rika 0.1</b></span>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 10 5 5 5-5"/></svg>
+              </button>
+              <button id="sendBtn" type="submit" class="u452-send" aria-label="Gửi" aria-disabled="true">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5.5M6 11l6-6 6 6"/></svg>
+                <i class="u452-sq" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+          <p class="u452-live" role="status"></p>
+        </form>
+        <div class="composer-note">Rika có thể mắc lỗi. Hãy kiểm tra thông tin quan trọng.</div>
+      </div>
+    </main>
+  </div>
+
+  <div id="iruModal" class="modal hidden">
+    <div class="modal-backdrop" data-close="iruModal"></div>
+    <section class="modal-card modal-live2d">
+      <header class="modal-header">
+        <div><h2>Rika</h2><p>VTuber AI thử nghiệm</p></div>
+        <button class="icon-btn" type="button" data-close="iruModal" aria-label="Đóng">×</button>
+      </header>
+      <div class="live2d-stage">
+        <div id="iruLoading" class="live2d-loading">Đang tải Rika...</div>
+        <canvas id="iruCanvas"></canvas>
+        <div class="zoom-controls">
+          <button type="button" id="zoomInBtn" aria-label="Phóng to">+</button>
+          <button type="button" id="zoomOutBtn" aria-label="Thu nhỏ">−</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div id="settingsModal" class="modal hidden">
+    <div class="modal-backdrop" data-close="settingsModal"></div>
+    <section class="modal-card">
+      <header class="modal-header">
+        <div><h2>Cài đặt</h2><p>Tùy chỉnh Rika AI</p></div>
+        <button class="icon-btn" type="button" data-close="settingsModal" aria-label="Đóng">×</button>
+      </header>
+      <div class="modal-content">
+        <section class="setting-section">
+          <h3>Máy chủ AI</h3>
+          <label for="providerSelect">Nhà cung cấp</label>
+          <select id="providerSelect">
+            <option value="openrouter">OpenRouter (Miễn phí)</option>
+            <option value="openai">OpenAI (GPT-4o-mini)</option>
+          </select>
+          <small id="modelInfo" class="hint"></small>
+        </section>
+
+        <section class="setting-section">
+          <h3>Giao diện</h3>
+          <div class="ux u433-scope">
+            <div class="u433-g">
+              <label class="u433-row u433-sw-row">
+                <span class="u433-sw-label">
+                  <strong>Chế độ tối</strong>
+                  <small>Chuyển sang nền tối</small>
+                </span>
+                <input id="darkMode" class="u433-in" type="checkbox" role="switch">
+                <span class="u433-sw" aria-hidden="true"></span>
+              </label>
+            </div>
+          </div>
+        </section>
+
+        <section class="setting-section">
+          <h3>Ghi nhớ & phong cách</h3>
+          <div class="ux u433-scope">
+            <div class="u433-g">
+              <label class="u433-row u433-sw-row">
+                <span class="u433-sw-label">
+                  <strong>Bật ghi chú</strong>
+                  <small>Gửi kèm câu hỏi</small>
+                </span>
+                <input id="memoryEnabled" class="u433-in" type="checkbox" role="switch">
+                <span class="u433-sw" aria-hidden="true"></span>
+              </label>
+
+              <label class="u433-row">
+                <input id="shortAnswers" class="u433-in" type="checkbox">
+                <span class="u433-cb" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="m5.5 12.5 4 4 9-9.5"/></svg>
+                </span>
+                <span>Ưu tiên trả lời ngắn gọn</span>
+              </label>
+
+              <div class="u433-rg" role="radiogroup" aria-label="Phong cách trả lời" id="toneGroup">
+                <label class="u433-row">
+                  <input class="u433-in" type="radio" name="tone" value="friendly">
+                  <span class="u433-rd" aria-hidden="true"></span>
+                  <span>Thân thiện</span>
+                </label>
+                <label class="u433-row">
+                  <input class="u433-in" type="radio" name="tone" value="formal">
+                  <span class="u433-rd" aria-hidden="true"></span>
+                  <span>Trang trọng</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <label for="memoryNote" class="u433-note-label">Ghi chú của bạn</label>
+          <textarea id="memoryNote" rows="3" placeholder="Ví dụ: Trả lời bằng tiếng Việt..."></textarea>
+        </section>
+
+        <div class="modal-actions">
+          <button id="resetSettingsBtn" class="secondary-btn" type="button">Đặt lại</button>
+          <button id="saveSettingsBtn" class="primary-btn" type="button">Lưu</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div id="exploreModal" class="modal hidden">
+    <div class="modal-backdrop" data-close="exploreModal"></div>
+    <section class="modal-card">
+      <header class="modal-header">
+        <div><h2>Khám phá</h2><p>Chọn chủ đề để bắt đầu</p></div>
+        <button class="icon-btn" type="button" data-close="exploreModal" aria-label="Đóng">×</button>
+      </header>
+      <div class="modal-content explore-grid">
+        <button class="explore-card" type="button" data-prompt="Kể về một ngày của bạn trong phòng thí nghiệm đi."><strong>Cuộc sống thường ngày</strong></button>
+        <button class="explore-card" type="button" data-prompt="Bạn nghĩ gì về thế giới bên ngoài?"><strong>Thế giới bên ngoài</strong></button>
+        <button class="explore-card" type="button" data-prompt="Hãy kể cho mình một câu chuyện cổ tích nhé."><strong>Kể chuyện</strong></button>
+        <button class="explore-card" type="button" data-prompt="Giúp mình giải bài tập này."><strong>Học tập</strong></button>
+      </div>
+    </section>
+  </div>
+
+  <div id="uploadModal" class="modal hidden">
+    <div class="modal-backdrop" data-close="uploadModal"></div>
+    <section class="modal-card modal-upload">
+      <header class="modal-header">
+        <div><h2>Đính kèm tệp</h2><p>Tải lên để Rika đọc nội dung</p></div>
+        <button class="icon-btn" type="button" data-close="uploadModal" aria-label="Đóng">×</button>
+      </header>
+      <div class="modal-content modal-content-upload">
+        <div class="ux u432" id="uploadZone">
+          <div class="u432-dz" tabindex="0" role="button" aria-label="Tải tệp lên">
+            <div class="u432-idle">
+              <span class="u432-ar" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M12 16V5M7 9.5 12 4.5l5 5"/><path d="M5 15v2.5A2.5 2.5 0 0 0 7.5 20h9a2.5 2.5 0 0 0 2.5-2.5V15"/></svg>
+              </span>
+              <b>Kéo tệp vào đây</b><b aria-hidden="true">Thả ra là xong</b>
+              <small>Hoặc <button type="button" class="u432-br" tabindex="-1">chọn tệp</button> · tối đa 10MB</small>
+            </div>
+            <div class="u432-up" aria-hidden="true">
+              <div class="u432-st">
+                <svg class="u432-ring" viewBox="0 0 100 100"><circle class="tk" cx="50" cy="50" r="46"/><circle class="pg" cx="50" cy="50" r="46"/></svg>
+                <svg class="u432-doc" viewBox="0 0 50 62">
+                  <path class="pp" d="M6 1h26l15 15v39a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V7a6 6 0 0 1 6-6z"/>
+                  <path class="fd" d="M32 1v10a5 5 0 0 0 5 5h10z"/>
+                  <rect class="ln" x="9" y="22" width="24" height="3" rx="1.5"/>
+                  <rect class="ln" x="9" y="29" width="30" height="3" rx="1.5"/>
+                  <rect class="tg" x="-4" y="40" width="28" height="14" rx="3.5"/>
+                  <text x="10" y="50" text-anchor="middle">PDF</text>
+                </svg>
+                <span class="u432-ok"><svg viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span>
+              </div>
+              <p class="u432-nm"></p>
+            </div>
+            <input class="u432-file" type="file" tabindex="-1" aria-hidden="true" accept=".txt,.md,.json,.csv,.pdf,.png,.jpg,.jpeg,.webp,.gif">
+          </div>
+          <p class="u432-live" role="status"></p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div id="confirmModal" class="modal hidden"></div>
+
+  <div id="toast" class="toast" role="status"></div>
+</body>
+</html>
